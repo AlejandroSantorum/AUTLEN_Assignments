@@ -1,3 +1,12 @@
+/**
+*   Authors:
+*       · Alejandro Santorum Varela - aleandro.santorum@estudiante.uam.es
+*       · Rafael Sanchez Sanchez - rafael.sanchezs@estudiante.uam.es
+*   File: fsm.c
+*   Project: AUTLEN assignments - optional exercise
+*   Date: October 3, 2019
+**/
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,7 +14,7 @@
 
 #define SIZE 255
 
-int load_fsm (char *filename, char ***table, int **finals, int *table_sz, int *finals_sz) {
+int load_fsm(char *filename, char ***table, int **finals, int *table_sz, int *finals_sz) {
     int nstates, nfinals;
     FILE *fp = fopen(filename, "r");
     char buffer[SIZE];
@@ -33,15 +42,21 @@ int load_fsm (char *filename, char ***table, int **finals, int *table_sz, int *f
     }
     *table_sz = nstates;
     *finals_sz = nfinals;
+    fclose(fp);
     return 0;
 }
 
+
+void free_fsm(char **table, int *finals, int table_sz){
+    for(int i = 0; i < table_sz; i++){
+        free(table[i]);
+    }
+    free(table);
+    free(finals);
+}
+
+
 int main(int argc, char *argv[]) {
-    /* char table[4][4] = {{0, "a", 0, "b"},
-                        {"b", 0, "a", "c"},
-                        {"a", "b", 0, "c"},
-                        {"c", "b", "a", 0}};
-    int finals[] = {3}; */
     char *string = argv[2];
     int state = 0;
     bool found = false;
@@ -62,6 +77,7 @@ int main(int argc, char *argv[]) {
         }
         if (!found) {
             printf("Palabra no reconocida por el autómata. (No existe transición).\n");
+            free_fsm(table, finals, table_sz);
             return 0;
         }
         string++;
@@ -71,10 +87,12 @@ int main(int argc, char *argv[]) {
     for (size_t i = 0; i < finals_sz; i++) {
         if (finals[i] == state){
             printf("Palabra reconocida por el autómata\n");
+            free_fsm(table, finals, table_sz);
             return 0;
         }
     }
 
     printf("Palabra no reconocida por el autómata. (Estado no final).\n");
+    free_fsm(table, finals, table_sz);
     return 0;
 }
