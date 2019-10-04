@@ -28,8 +28,8 @@ int load_fsm(char *filename, char ***table, int **finals, int *table_sz, int *fi
     }
 
     for (size_t i = 0; i < nstates; i++) {
-        fgets((*table)[i], nstates+1, fp);
-        fseek(fp, 1, SEEK_CUR);
+        fgets(buffer, 255, fp);
+        strncpy((*table)[i], buffer ,nstates);
     }
 
     fgets(buffer, SIZE, fp);
