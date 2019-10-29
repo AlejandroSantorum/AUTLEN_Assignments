@@ -1,3 +1,5 @@
+#ifndef STACK_H
+#define STACK_H
 
 typedef struct stack stack;
 
@@ -24,3 +26,5 @@ void stack_pop(stack *, void *dest);
 
 /* Prints the stack */
 void stack_print(FILE *fout, stack *s, char *(*to_str)(void *, size_t));
+
+#endif

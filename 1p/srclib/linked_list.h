@@ -107,6 +107,17 @@ void *llist_pop(llist *l);
 void *llist_del(llist *l, void *elem, int (*cmp_func) (void *, void *));
 
 /**
+ * Checks if elem is present in the list
+ *
+ * @param l Linked list to work with
+ * @param elem Value to find
+ * @param cmp_func Function used to compare values. Must return 0 if equal.
+ * @return error code.
+ * @ingroup linkedlist
+ */
+bool llist_in(llist *l, void *elem, int (*cmp_func) (void *, void *));
+
+/**
  * Prints the linked list pointed by l, to file f, with function to_string which
  * give the representation of an element of the list as a string.
  *
