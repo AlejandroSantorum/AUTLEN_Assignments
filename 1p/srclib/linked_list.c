@@ -12,7 +12,7 @@ llist *llist_new(){
     return l;
 };
 
-void llist_free(llist *l){
+void llist_delete(llist *l){
     if(l) free(l);
 };
 

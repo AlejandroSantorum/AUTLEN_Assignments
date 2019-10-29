@@ -53,7 +53,7 @@ llist *llist_new();
  * @param l Linked list to free
  * @ingroup linkedlist
  */
-void llist_free(llist *l);
+void llist_delete(llist *l);
 
 /**
  * Frees up the memory that is pointed with every element
