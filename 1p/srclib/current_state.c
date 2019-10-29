@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdint.h>
 #include "current_state.h"
 
 #define STATE_NAME 'q'
@@ -62,7 +63,7 @@ cstate *cstate_add_state(cstate *cst, int index){
 }
 
 
-void cstate_to_string(cstate *cst, char **string){
+void cstate_to_string(cstate *cst, char *string){
     size_t i;
     char *cst_str;
 
@@ -75,7 +76,7 @@ void cstate_to_string(cstate *cst, char **string){
         return;
     }
 
-    cst_str = *string;
+    cst_str = string;
     for (i = 0; i < cst->nstates; i++) {
         if (cst->states[i]) {
             *cst_str = STATE_NAME;

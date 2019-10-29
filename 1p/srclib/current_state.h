@@ -10,6 +10,6 @@ void cstate_remove(cstate *cst);
 
 cstate *cstate_add_state(cstate *cst, int index);
 
-void cstate_to_string(cstate *cst, char **string);
+void cstate_to_string(cstate *cst, char *string);
 
 #endif /* CURRENTSTATE_H */
