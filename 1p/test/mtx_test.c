@@ -1,9 +1,9 @@
 #include "../srclib/utils.h"
 
 int main(int argc, char const *argv[]) {
-    int **mtxA;
-    int **mtxB;
-    int **res;
+    uint8_t **mtxA;
+    uint8_t **mtxB;
+    uint8_t **res;
 
     mtxA = sq_mtx_new(2);
     mtxB = sq_mtx_new(2);

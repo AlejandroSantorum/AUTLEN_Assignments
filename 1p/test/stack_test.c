@@ -21,7 +21,7 @@ char *double_str(void *x, size_t size){
     return s;
 }
 
-void main(){
+int main(){
     stack *s_int;
     stack *s_double;
     s_int = stack_init(stack_new(), 10, sizeof(int));
@@ -34,4 +34,5 @@ void main(){
     stack_destroy(s_double);
     stack_delete(s_int);
     stack_delete(s_double);
+    return 0;
 }
