@@ -1,19 +1,23 @@
-CC = gcc
-CFLAGS = -g
-EXE = main_de_ejemplo
+all: src
 
-all : $(EXE)
+lib:
+	cd srclib && $(MAKE)
 
-.PHONY : clean
-clean :
-	rm -f *.o core $(EXE)
+tests: lib
+	cd test && $(MAKE)
 
-.PHONY : clean_dot
-clean_dot :
-	rm -f *.dot
+src: lib
+	cd src && $(MAKE)
 
-$(EXE) : % : %.o afnd.o
-	$(CC) $(CFLAGS) -o $@ $@.o afnd.o
+.PHONY: cleansrc cleanlib cleantests clean
+cleansrc:
+	cd src && $(MAKE) clean
 
-afnd.o : afnd.c afnd.h
-	$(CC) $(CFLAGS) -c $<
+cleanlib:
+	cd srclib && $(MAKE) clean
+
+cleantests:
+	cd test && $(MAKE) clean
+
+clean: cleansrc cleanlib cleantests
+	rm -rf *.o

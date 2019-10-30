@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "afnd.h"
+#include "../srclib/afnd.h"
 //#include "transforma.h"
 
 int main(int argc, char ** argv)
