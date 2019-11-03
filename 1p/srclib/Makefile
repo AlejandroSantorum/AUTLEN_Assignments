@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -ansi -Wall -pedantic -std=c99
-OBJS = afnd.o current_state.o stack.o transforma.o utils.o
+OBJS = afnd.o current_state.o stack.o transforma.o utils.o linked_list.o
 
 all : $(OBJS)
 
@@ -19,7 +19,9 @@ transforma.o: transforma.c transforma.h
 utils.o: utils.c utils.h
 	$(CC) $(CFLAGS) -c $<
 
-
+linked_list.o: linked_list.c linked_list.h
+	$(CC) $(CFLAGS) -c $<
+	
 .PHONY : clean
 clean :
 	rm -f *.o

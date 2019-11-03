@@ -1,0 +1,19 @@
+digraph af11  { rankdir=LR;
+	_invisible [style="invis"];
+	q0;
+	q1;
+	q2;
+	q3;
+	q4;
+	q5 [penwidth="2"];
+	_invisible -> q0 ;
+	q0 -> q1 [label="+"];
+	q1 -> q1 [label="0"];
+	q1 -> q4 [label="0"];
+	q1 -> q2 [label="."];
+	q2 -> q3 [label="0"];
+	q3 -> q3 [label="0"];
+	q4 -> q3 [label="."];
+	q0 -> q1 [label="&lambda;"];
+	q3 -> q5 [label="&lambda;"];
+}

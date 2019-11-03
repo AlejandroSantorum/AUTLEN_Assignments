@@ -1,9 +1,12 @@
 CC = gcc
 CFLAGS = -g -ansi -Wall -pedantic -std=c99
-TESTS = stack_test mtx_test translate_from_afnd
+TESTS = stack_test mtx_test cstate_test translate_from_afnd
 LIBS = ../srclib
 
 all: $(TESTS)
+
+cstate_test: cstate_test.c $(LIBS)/current_state.o
+	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 stack_test: stack_test.c $(LIBS)/stack.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm

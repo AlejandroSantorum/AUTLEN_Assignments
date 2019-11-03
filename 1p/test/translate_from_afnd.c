@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]) {
         for (size_t j = 0; j < alph_sz; j++) {
             for (size_t k = 0; k < nstates; k++) {
                 if(trans_tb[i][j][k])
-                    printf("%d %s %d\n",i, alphabet[j], k);
+                    printf("%ld %s %ld\n",i, alphabet[j], k);
             }
         }
     }

@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "../srclib/afnd.h"
-//#include "transforma.h"
+#include "../srclib/transforma.h"
 
 int main(int argc, char ** argv)
 {
@@ -36,11 +36,13 @@ int main(int argc, char ** argv)
 	AFNDInsertaLTransicion(p_afnd, "q3", "q5");
 	AFNDCierraLTransicion(p_afnd);
 
-	//afd  = AFNDTransforma(p_afnd);
+    afd  = AFNDTransforma(p_afnd);
 	AFNDImprime(stdout,p_afnd);
+	AFNDImprime(stdout,afd);
+    AFNDADot(afd);
 	AFNDADot(p_afnd);
 
-	//AFNDElimina(afd);
+	AFNDElimina(afd);
 	AFNDElimina(p_afnd);
 
 	return 0;

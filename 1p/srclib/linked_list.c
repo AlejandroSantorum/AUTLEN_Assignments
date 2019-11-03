@@ -10,11 +10,11 @@ void __lnode_free();
 llist *llist_new(){
     llist *l = calloc(1, sizeof(llist));
     return l;
-};
+}
 
 void llist_delete(llist *l){
     if(l) free(l);
-};
+}
 
 void llist_destroy(llist *l){
     struct lnode *aux;
@@ -34,7 +34,7 @@ void *llist_head(llist *l){
     if(l)
         return l->first->val;
     return NULL;
-};
+}
 
 int llist_add(llist *l, void *elem){
     if(l){
@@ -70,14 +70,12 @@ void *llist_del(llist *l, void *elem, int (*cmp_func) (void *, void *)){
 }
 
 bool llist_in(llist *l, void *elem, int (*cmp_func) (void *, void *)){
-    void *aux;
     if(l){
-        struct lnode *temp = l->first, *prev;
+        struct lnode *temp = l->first;
         if(temp && !cmp_func(elem, temp->val)){
             return true;
         }
         while( temp && cmp_func(elem, temp->val)){
-            prev = temp;
             temp = temp->next;
         }
         if (!temp) return false;

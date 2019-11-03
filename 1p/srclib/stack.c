@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "stack.h"
 
+#pragma pack(1)
 struct stack {
     size_t top;
     size_t size;
@@ -93,6 +94,11 @@ void stack_push(stack *s, void *elem){
     void *dest = tmp + s->top * s->memb_sz;
     memcpy(dest, elem, s->memb_sz);
     s->top++;
+}
+
+size_t stack_top(stack *s){
+    if (s) return s->top;
+    return 0;
 }
 
 void stack_print(FILE *fout, stack *s, char *(*to_str)(void *, size_t)){

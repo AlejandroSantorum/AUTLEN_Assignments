@@ -112,7 +112,33 @@ char **get_alphabet(AFND *afnd, size_t *arr_sz){
     return alphabet;
 }
 
-uint8_t ***get_first_transition_table(AFND *afnd){
+uint8_t *get_initial_states(AFND *afnd, size_t *arr_sz){
+    if (!afnd) {
+        return NULL;
+    }
+    *arr_sz = AFNDNumEstados(afnd);
+    uint8_t *initial_states = calloc(*arr_sz, sizeof(uint8_t));
+    for (size_t i = 0; i < *arr_sz; i++) {
+        initial_states[i] = (AFNDTipoEstadoEn(afnd, i) == INICIAL);
+        initial_states[i] |= (AFNDTipoEstadoEn(afnd, i) == INICIAL_Y_FINAL);
+    }
+    return initial_states;
+}
+
+uint8_t *get_final_states(AFND *afnd, size_t *arr_sz){
+    if (!afnd) {
+        return NULL;
+    }
+    *arr_sz = AFNDNumEstados(afnd);
+    uint8_t *final_states = calloc(*arr_sz, sizeof(uint8_t));
+    for (size_t i = 0; i < *arr_sz; i++) {
+        final_states[i] = (AFNDTipoEstadoEn(afnd, i) == FINAL);
+        final_states[i] |= (AFNDTipoEstadoEn(afnd, i) == INICIAL_Y_FINAL);
+    }
+    return final_states;
+}
+
+uint8_t ***get_nfa_transition_table(AFND *afnd){
     size_t nstates = AFNDNumEstados(afnd);
     size_t nsym = AFNDNumSimbolos(afnd);
 
@@ -135,7 +161,7 @@ uint8_t ***get_first_transition_table(AFND *afnd){
     return trans_tb;
 }
 
-void delete_first_transition_table(uint8_t ***trans_tb, size_t nstates, size_t nsym){
+void delete_nfa_transition_table(uint8_t ***trans_tb, size_t nstates, size_t nsym){
     if(!trans_tb) {
         return;
     }
@@ -169,4 +195,36 @@ uint8_t **get_lambda_clausure(AFND *afnd, size_t *tb_sz){
     }
 
     return lambda_cl;
+}
+
+
+AFND *get_dfa_object(row *afd_table, char **alphabet, size_t alph_sz, size_t dfa_states, size_t nstates){
+
+    if (!afd_table || !alphabet) return NULL;
+    AFND *afd;
+    char *state_name_1 = calloc(2*(nstates+2), sizeof(char));
+    char *state_name_2 = calloc(2*(nstates+2), sizeof(char));
+    afd = AFNDNuevo("determinista", dfa_states, alph_sz);
+
+    for (size_t i = 0; i < alph_sz; i++) {
+        AFNDInsertaSimbolo(afd, alphabet[i]);
+    }
+
+    for (size_t i = 0; i < dfa_states; i++) {
+        cstate_to_string(afd_table[i].state_from, state_name_1, 2*(nstates + 1));
+        AFNDInsertaEstado(afd, state_name_1, cstate_get_type(afd_table[i].state_from));
+    }
+
+    for (size_t i = 0; i < dfa_states; i++) {
+        cstate_to_string(afd_table[i].state_from, state_name_1, 2*(nstates + 1));
+        for (size_t j = 0; j < alph_sz; j++) {
+            if (cstate_is_valid(afd_table[i].state_to[j])){
+                cstate_to_string(afd_table[i].state_to[j], state_name_2, 2*(nstates + 1));
+                AFNDInsertaTransicion(afd, state_name_1, alphabet[j], state_name_2);
+            }
+        }
+    }
+    free(state_name_1);
+    free(state_name_2);
+    return afd;
 }
