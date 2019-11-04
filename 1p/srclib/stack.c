@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include "stack.h"
 
-#pragma pack(1)
+// #pragma pack(1)
 struct stack {
     size_t top;
     size_t size;
@@ -81,7 +81,7 @@ void stack_push(stack *s, void *elem){
     }
     if(s->top == s->size){
         void *old = s->elems;
-        s->elems = realloc(s->elems, 2*s->size);
+        s->elems = realloc(s->elems, 2*s->size*s->memb_sz);
         if(!s->elems){
             errno = EPERM;
             perror("stack is full");

@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include <malloc.h>
 #include "utils.h"
 #include "linked_list.h"
 #include "stack.h"
@@ -68,21 +67,24 @@ row *__get_dfa_table(uint8_t ***nfa_trans_tb, uint8_t **l_clausure, uint8_t *i_s
 
     while(stack_top(s)){
         // Extract state from stack
-        if (tb_nstates > tb_sz){
+        if (tb_nstates >= tb_sz){
             tb_sz *= 2;
-            dfa_table = reallocarray(dfa_table, tb_sz, sizeof(row));
+            dfa_table = realloc(dfa_table, tb_sz * sizeof(row));
         }
         dfa_table[tb_nstates].state_from = cstate_new();
         cs = dfa_table[tb_nstates].state_from;
         stack_pop(s, cs);
 
+        if (llist_in(closed, cs, cstate_cmp)){
+            cstate_remove(cs);
+            continue;
+        }
         cstate_to_string(cs, buffer, 255);
-        printf("Estoy explorando %s\n", buffer);
         // Add to closed list
         llist_add(closed, cs);
 
         // Discover states that can be transversed to
-        dfa_table[tb_nstates].state_to = calloc(nstates, sizeof(cstate *));
+        dfa_table[tb_nstates].state_to = calloc(alph_sz, sizeof(cstate *));
         __get_dfa_transition_table_row(cs, dfa_table[tb_nstates].state_to, alph_sz, nfa_trans_tb, nstates);
         __add_clausure_to_dfa_row(dfa_table[tb_nstates].state_to, l_clausure, alph_sz, nstates);
         crow = dfa_table[tb_nstates].state_to;
@@ -96,6 +98,7 @@ row *__get_dfa_table(uint8_t ***nfa_trans_tb, uint8_t **l_clausure, uint8_t *i_s
             if (cstate_is_valid(crow[i]) && !llist_in(closed, crow[i], cstate_cmp)){
                 //stack_push(s, crow[i]);
                 cs_aux = cstate_copy(crow[i]);
+                cstate_to_string(cs_aux, buffer, 255);
                 stack_push(s, cs_aux);
                 cstate_delete(cs_aux);
             }
