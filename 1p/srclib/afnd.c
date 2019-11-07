@@ -281,7 +281,7 @@ _afnd_ofus_bar_cia*_afnd_ofus_bar_black){_afnd_ofus_bar_small*
 _afnd_ofus_baz_small;int _afnd_ofus_baz_yellow=0;{if(!(!_afnd_ofus_bar_black||
 _afnd_ofus_bar_clinton(_afnd_ofus_bar_black)))goto _afnd_ofus_baz_blue;return
 0;_afnd_ofus_baz_blue:;}_afnd_ofus_baz_yellow+=fprintf(fd,
-"Lista con %hu elementos: \n",_afnd_ofus_bar_jfk(_afnd_ofus_bar_black));
+"Lista con %d elementos: \n",_afnd_ofus_bar_jfk(_afnd_ofus_bar_black));
 _afnd_ofus_baz_small=_afnd_ofus_bar_black->_afnd_ofus_baz_fish;{
 _afnd_ofus_baz_magenta:if(!(_afnd_ofus_baz_small!=NULL))goto
 _afnd_ofus_baz_cyan;{_afnd_ofus_baz_yellow+=_afnd_ofus_bar_emacs(fd,

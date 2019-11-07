@@ -134,7 +134,15 @@ void cstate_to_string(cstate *cst, char *string, size_t str_sz){
     }
 }
 
+
 int cstate_cmp(cstate *c1, cstate *c2){
+    return memcmp(c1->states, c2->states, sizeof(uint8_t) * c1->nstates);
+}
+
+
+int cstate_cmp_v(void *c1_v, void *c2_v){
+    cstate *c1 = (cstate *) c1_v;
+    cstate *c2 = (cstate *) c2_v;
     return memcmp(c1->states, c2->states, sizeof(uint8_t) * c1->nstates);
 }
 

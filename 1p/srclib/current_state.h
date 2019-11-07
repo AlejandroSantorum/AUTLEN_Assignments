@@ -31,6 +31,8 @@ void cstate_to_string(cstate *cst, char *string, size_t str_sz);
 
 int cstate_cmp(cstate *c1, cstate *c2);
 
+int cstate_cmp_v(void *c1_v, void *c2_v);
+
 cstate *cstate_set_initial(cstate *cs);
 
 cstate *cstate_set_final(cstate *cs);

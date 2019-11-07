@@ -75,7 +75,7 @@ row *__get_dfa_table(uint8_t ***nfa_trans_tb, uint8_t **l_clausure, uint8_t *i_s
         cs = dfa_table[tb_nstates].state_from;
         stack_pop(s, cs);
 
-        if (llist_in(closed, cs, cstate_cmp)){
+        if (llist_in(closed, cs, cstate_cmp_v)){
             cstate_remove(cs);
             continue;
         }
@@ -95,7 +95,7 @@ row *__get_dfa_table(uint8_t ***nfa_trans_tb, uint8_t **l_clausure, uint8_t *i_s
 
         // If theres a new state, push it to the stack
         for (size_t i = 0; i < alph_sz; i++) {
-            if (cstate_is_valid(crow[i]) && !llist_in(closed, crow[i], cstate_cmp)){
+            if (cstate_is_valid(crow[i]) && !llist_in(closed, crow[i], cstate_cmp_v)){
                 //stack_push(s, crow[i]);
                 cs_aux = cstate_copy(crow[i]);
                 cstate_to_string(cs_aux, buffer, 255);
