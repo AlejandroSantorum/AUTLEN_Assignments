@@ -1,3 +1,14 @@
+/******************************************************************************/
+/*
+/*  Authors:
+/*          · Rafael Sanchez Sanchez - rafael.sanchezs@estudiante.uam.es
+/*          · Alejandro Santorum Varela - alejandro.santorum@estudiante.uam.es
+/*  File: current_state.h
+/*  Project: First assignment AUTLEN
+/*  Date: November 14, 2019
+/*
+/******************************************************************************/
+
 #ifndef CURRENTSTATE_H
 #define CURRENTSTATE_H
 

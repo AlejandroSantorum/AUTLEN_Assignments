@@ -1,5 +1,15 @@
-#include "utils.h"
+/******************************************************************************/
+/*
+/*  Authors:
+/*          · Rafael Sanchez Sanchez - rafael.sanchezs@estudiante.uam.es
+/*          · Alejandro Santorum Varela - alejandro.santorum@estudiante.uam.es
+/*  File: utils.c
+/*  Project: First assignment AUTLEN
+/*  Date: November 14, 2019
+/*
+/******************************************************************************/
 
+#include "utils.h"
 
 
 /*

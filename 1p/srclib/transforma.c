@@ -1,3 +1,14 @@
+/******************************************************************************/
+/*
+/*  Authors:
+/*          · Rafael Sanchez Sanchez - rafael.sanchezs@estudiante.uam.es
+/*          · Alejandro Santorum Varela - alejandro.santorum@estudiante.uam.es
+/*  File: transforma.c
+/*  Project: First assignment AUTLEN
+/*  Date: November 14, 2019
+/*
+/******************************************************************************/
+
 #include <stdbool.h>
 #include "utils.h"
 #include "linked_list.h"
