@@ -1,13 +1,13 @@
-/******************************************************************************/
-/*
-/*  Authors:
-/*          · Rafael Sanchez Sanchez - rafael.sanchezs@estudiante.uam.es
-/*          · Alejandro Santorum Varela - alejandro.santorum@estudiante.uam.es
-/*  File: utils.h
-/*  Project: First assignment AUTLEN
-/*  Date: November 14, 2019
-/*
-/******************************************************************************/
+/*******************************************************************************
+
+    Authors:
+        · Rafael Sanchez Sanchez - rafael.sanchezs@estudiante.uam.es
+        · Alejandro Santorum Varela - alejandro.santorum@estudiante.uam.es
+    File: utils.h
+    Project: First assignment AUTLEN
+    Date: November 14, 2019
+
+*******************************************************************************/
 
 #include <stdlib.h>
 #include <unistd.h>
