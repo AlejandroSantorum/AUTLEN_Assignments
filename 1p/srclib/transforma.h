@@ -19,6 +19,16 @@ typedef struct _row {
     cstate **state_to;
 } row;
 
+
+/**
+    AFNDTransforma
+    Input:
+        AFND *afnd: pointer to a ndfa object
+    Returns:
+        ndfa object, or NULL in error case
+    Advanced description:
+        It computes the equivalent DFA of the introduced NDFA.
+*/
 AFND *AFNDTransforma(AFND *afnd);
 
 #endif

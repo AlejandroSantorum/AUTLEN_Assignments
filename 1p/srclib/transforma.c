@@ -23,6 +23,16 @@ cstate **__get_dfa_transition_table_row(cstate *c, cstate **row_c, size_t alph_s
 cstate *__add_clausure_to_cstate(cstate *c, uint8_t **l_clausure, size_t nstates);
 cstate **__add_clausure_to_dfa_row(cstate **row, uint8_t **l_clausure, size_t alph_sz, size_t nstates);
 
+
+/**
+    AFNDTransforma
+    Input:
+        AFND *afnd: pointer to a ndfa object
+    Returns:
+        ndfa object, or NULL in error case
+    Advanced description:
+        It computes the equivalent DFA of the introduced NDFA.
+*/
 AFND *AFNDTransforma(AFND *afnd){
     if (!afnd){
         return NULL;
@@ -55,6 +65,22 @@ AFND *AFNDTransforma(AFND *afnd){
     return dfa;
 }
 
+
+/**
+    __get_dfa_table (private function)
+    Input:
+        uint8_t ***nfa_trans_tb: NDFA transition table
+        uint8_t **l_clausure: clausure lambda matrix
+        uint8_t *i_states: array of initial states
+        uint8_t *f_states: array of final states
+        size_t alph_sz: alphabet size
+        size_t nstates: NDFA number of states
+        size_t *dfa_states: size_t pointer, where we return DFA num. of states
+    Returns:
+        ndfa object, or NULL in error case
+    Advanced description:
+        It computes the equivalent DFA table of the introduced NDFA.
+*/
 row *__get_dfa_table(uint8_t ***nfa_trans_tb, uint8_t **l_clausure, uint8_t *i_states, uint8_t *f_states, size_t alph_sz, size_t nstates, size_t *dfa_states){
     if (!nfa_trans_tb || !l_clausure){
         fprintf(stderr, "%s: NULL pointer at %s:%d\n", __func__, __FILE__, __LINE__);
@@ -126,6 +152,20 @@ row *__get_dfa_table(uint8_t ***nfa_trans_tb, uint8_t **l_clausure, uint8_t *i_s
     return dfa_table;
 }
 
+
+/**
+    __get_adj_states_by_sym_idx (private function)
+    Input:
+        cstate *c: current NDFA state
+        size_t sym_j: symbol index
+        uint8_t ***nfa_trans_tb: NDFA transition table
+        size_t nstates: NDFA number of states
+    Returns:
+        new current state object pointer, or NULL in error case
+    Advanced description:
+        It computes the adjacent states from the current state with the
+        symbol passed by argument (it is passed its index in the alphabet)
+*/
 cstate *__get_adj_states_by_sym_idx(cstate *c, size_t sym_j, uint8_t ***nfa_trans_tb, size_t nstates) {
     if (!c){
         fprintf(stderr, "%s: NULL pointer at %s:%d\n", __func__, __FILE__, __LINE__);
@@ -147,6 +187,22 @@ cstate *__get_adj_states_by_sym_idx(cstate *c, size_t sym_j, uint8_t ***nfa_tran
     return c_next;
 }
 
+
+/**
+    __get_dfa_transition_table_row (private function)
+    Input:
+        cstate *c: current NDFA state
+        cstate **row_c: an entire row of the transition table
+        size_t alph_sz: alphabet size
+        uint8_t ***nfa_trans_tb: NDFA transition table
+        size_t nstates: NDFA number of states
+    Returns:
+        the transition table row of the given current state (array of cstates)
+    Advanced description:
+        It computes the transition table row of the given current state, i.e., for each
+        alphabet symbol, this function computes its adjacent states and stores
+        it in a current state object array (a transition table row).
+*/
 cstate **__get_dfa_transition_table_row(cstate *c, cstate **row_c, size_t alph_sz, uint8_t ***nfa_trans_tb, size_t nstates){
     if (!c || !row_c){
         fprintf(stderr, "%s: NULL pointer at %s:%d\n", __func__, __FILE__, __LINE__);
@@ -161,6 +217,18 @@ cstate **__get_dfa_transition_table_row(cstate *c, cstate **row_c, size_t alph_s
 }
 
 
+/**
+    __add_clausure_to_cstate (private function)
+    Input:
+        cstate *c: pointer to a current state object
+        uint8_t **l_clausure: clausure lambda matrix
+        size_t nstates: NDFA number of states
+    Returns:
+        a state after being closed with lambda clausure matrix
+    Advanced description:
+        It computes the clausure to a given DFA state. So for the
+        DFA state, the states that can be reached with a lambda symbol are added.
+*/
 cstate *__add_clausure_to_cstate(cstate *c, uint8_t **l_clausure, size_t nstates){
     if (!c ||!l_clausure){
         fprintf(stderr, "%s: NULL pointer at %s:%d\n", __func__, __FILE__, __LINE__);
@@ -183,6 +251,21 @@ cstate *__add_clausure_to_cstate(cstate *c, uint8_t **l_clausure, size_t nstates
     return c;
 }
 
+
+/**
+    __add_clausure_to_dfa_row (private function)
+    Input:
+        cstate **row: array of pointers of current states (transition table row)
+        uint8_t **l_clausure: clausure lambda matrix
+        size_t alph_sz: alphabet size
+        size_t nstates: NDFA number of states
+    Returns:
+        the transition table row after being closed with the lambda clausure matrix
+    Advanced description:
+        It computes the clausure to a given transition table row, so for the
+        DFA state, that represents the current row, the states that can be
+        reached with a lambda symbol are added.
+*/
 cstate **__add_clausure_to_dfa_row(cstate **row, uint8_t **l_clausure, size_t alph_sz, size_t nstates){
     if (!row || !l_clausure){
         fprintf(stderr, "%s: NULL pointer at %s:%d\n", __func__, __FILE__, __LINE__);
