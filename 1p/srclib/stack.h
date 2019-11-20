@@ -6,8 +6,6 @@ typedef struct stack stack;
 /* Returns an uninitialised stack pointer */
 stack *stack_new();
 
-stack *stack_is_empty(stack *);
-
 /* Frees stack's pointer memory */
 void stack_delete(stack *);
 
