@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include "afnd.h"
 #include "current_state.h"
-#include "transforma.h"
+#include "minimiza.h"
 
 /******************************************************************
  *

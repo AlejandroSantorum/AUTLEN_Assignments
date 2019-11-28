@@ -18,7 +18,7 @@
 #include "minimiza.h"
 
 uint8_t *** _delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t initial, char ** alphabet, uint8_t alph_sz);
-void _update_acc(uint8_t ***trans_tb, size_t nstates, uint8_t state, char ** alphabet, uint8_t alph_sz, uint8_t *acc);
+void _update_acc(uint8_t ***trans_tb, size_t nstates, uint8_t state, char ** alphabet, uint8_t alph_sz, uint8_t *acc, stack *check_acc);
 
 /**
     AFNDMinimiza
@@ -46,13 +46,13 @@ AFND *AFNDMinimiza(AFND *afnd){
 
 
     // Translate our table to the AFND object this function has to return
-    // AFND *dfa = get_dfa_object(min_table, alphabet, alph_sz, dfa_states, nstates);
+    //AFND *dfa = get_dfa_object(min_table, alphabet, alph_sz, dfa_states, nstates);
 
 
     free(f_states);
     free(alphabet);
     delete_nfa_transition_table(trans_tb, nstates, alph_sz);
-    return dfa;
+    /*return dfa;*/return NULL;
 }
 
 
@@ -69,7 +69,7 @@ uint8_t *** _delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t in
     uint8_t state;
     while (stack_top(check_acc)){
         stack_pop(check_acc, &state);
-        _update_acc(trans_tb, nstates, state, alphabet, alph_sz, acc);
+        _update_acc(trans_tb, nstates, state, alphabet, alph_sz, acc, check_acc);
     }
 
     for (size_t i = 0; i < nstates; i++) {
@@ -89,7 +89,7 @@ uint8_t *** _delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t in
     return trans_tb;
 }
 
-void _update_acc(uint8_t ***trans_tb, uint8_t nstates, uint8_t state, char **alphabet, uint8_t alph_sz, uint8_t *acc, stack *check_acc){
+void _update_acc(uint8_t ***trans_tb, size_t nstates, uint8_t state, char ** alphabet, uint8_t alph_sz, uint8_t *acc, stack *check_acc){
     for (size_t sym = 0; sym < alph_sz; sym++) {
         for (uint8_t j = 0; j < nstates; j++) {
             if(trans_tb[state][sym][j]){
