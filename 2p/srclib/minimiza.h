@@ -30,6 +30,6 @@ typedef struct _row {
 */
 AFND *AFNDMinimiza(AFND *afnd);
 
-uint8_t *** _delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t initial, char **alphabet, uint8_t alph_sz);
+uint8_t *** _delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t initial, uint8_t alph_sz);
 
 #endif

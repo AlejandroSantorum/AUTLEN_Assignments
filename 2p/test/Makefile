@@ -6,7 +6,7 @@ LIBS = ../srclib
 
 all: $(TESTS)
 
-test_del_states: test_del_states $(LIBS)/utils.o $(LIBS)/afnd.o $(LIBS)/minimiza.o
+test_del_states: test_del_states.c $(LIBS)/afnd.o $(LIBS)/minimiza.o $(LIBS)/utils.o $(LIBS)/current_state.o $(LIBS)/stack.o $(LIBS)/linked_list.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 # cstate_test: cstate_test.c $(LIBS)/current_state.o
