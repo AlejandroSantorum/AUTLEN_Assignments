@@ -15,7 +15,6 @@
 #include <stdint.h>
 #include "afnd.h"
 #include "current_state.h"
-#include "minimiza.h"
 
 /******************************************************************
  *
@@ -98,6 +97,22 @@ void sq_mtx_cpy(uint8_t **dest, uint8_t **src, size_t sz);
 */
 int fprintf_sq_mtx(FILE *f, uint8_t **mtx, size_t sz);
 
+/******************************************************************
+ *
+ * Utilities for deterministic finite automata
+ *
+*******************************************************************/
+uint8_t dfa_delta(uint8_t ***trans_tb, uint8_t nstates, uint8_t from, uint8_t sym_idx);
+
+/******************************************************************
+ *
+ * Tuples linked list
+ *
+*******************************************************************/
+typedef struct _tuple {
+    uint8_t a;
+    uint8_t b;
+} tuple;
 
 
 /******************************************************************

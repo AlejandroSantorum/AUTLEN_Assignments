@@ -19,6 +19,23 @@ typedef struct _cstate cstate;
 
 
 /**
+    struct _row
+    Description:
+        It represents a row of the DFA transition table
+    Members:
+        cstate *state_from
+            DFA State to which this row corresponds
+        cstate **state_to
+            Each i-th element of this array corresponds to the arrival
+            state from state_from with the i-th element of the alphabet.
+*/
+typedef struct _row {
+    cstate *state_from;
+    cstate **state_to;
+} row;
+
+
+/**
     cstate_size
     Input:
         None
