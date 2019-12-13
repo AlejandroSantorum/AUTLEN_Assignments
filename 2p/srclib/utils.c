@@ -170,7 +170,7 @@ int fprintf_sq_mtx(FILE *f, uint8_t **mtx, size_t sz) {
  * Utilities for deterministic finite automata
  *
 *******************************************************************/
-uint8_t dfa_delta(uint8_t ***trans_tb, uint8_t nstates, uint8_t from, uint8_t sym_idx){
+int dfa_delta(uint8_t ***trans_tb, uint8_t nstates, uint8_t from, uint8_t sym_idx){
     for (size_t i = 0; i < nstates; i++) {
         if (trans_tb[from][sym_idx][i] == 1){
             return i;

@@ -50,12 +50,8 @@ AFND *AFNDMinimiza(AFND *afnd){
     uint8_t ***trans_tb = get_nfa_transition_table(afnd);
     //// Get the initial state
     uint8_t *i_states = get_initial_states(afnd, &nstates);
-    uint8_t init;
-    for (size_t i = 0; i < nstates; i++) {
-        if (i_states[i]) {
-            init = i;
-        }
-    }
+    uint8_t init = 0;
+    for (size_t j = 0; i_states[j] == 0; init = ++j);
     //// Get the set of final states
     uint8_t *f_states = get_final_states(afnd, &nstates);
     //// Get the names of the states
@@ -203,7 +199,7 @@ uint8_t *** __delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t i
         }
     }
     //// Copy trans_tb to new adjacency matrix
-    size_t new_i, new_k;
+    // size_t new_i, new_k;
     for (size_t i = 0, new_i = 0; i < nstates; i++) {
         if (acc[i]){
             for (size_t j = 0; j < alph_sz; j++) {
