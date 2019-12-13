@@ -262,6 +262,29 @@ uint8_t *get_final_states(AFND *afnd, size_t *arr_sz){
 }
 
 /**
+ get_states_names
+ Input:
+     AFND *afnd: NDFA pointer
+     size_t *arr_sz: pointer to a size_t
+ Returns:
+     The NDFA state names
+ Advanced description:
+     It returns the NDFA state names. It also returns the  total
+     number of states in arr_sz
+*/
+char ** get_states_names(AFND *afnd, size_t *arr_sz){
+    if (!afnd) {
+        return NULL;
+    }
+    *arr_sz = AFNDNumEstados(afnd);
+    char **state_names = calloc(*arr_sz, sizeof(char *));
+    for (size_t i = 0; i < *arr_sz; i++) {
+        state_names[i] = AFNDNombreEstadoEn(afnd, i);
+    }
+    return state_names;
+}
+
+/**
  get_nfa_transition_table
  Input:
      AFND *afnd: NDFA pointer
@@ -381,7 +404,7 @@ uint8_t **get_lambda_clausure(AFND *afnd, size_t *tb_sz){
      It creates the DFA from the precalculated transition table and alphabet.
      It translates our structures to afnd.h structures
 */
-AFND *get_dfa_object(row *afd_table, char **alphabet, size_t alph_sz, size_t dfa_states, size_t nstates){
+AFND *get_dfa_object(row *afd_table, char **alphabet, size_t alph_sz, size_t dfa_states, size_t nstates, char **state_names){
 
     if (!afd_table || !alphabet) return NULL;
     AFND *afd;
@@ -394,15 +417,15 @@ AFND *get_dfa_object(row *afd_table, char **alphabet, size_t alph_sz, size_t dfa
     }
 
     for (size_t i = 0; i < dfa_states; i++) {
-        cstate_to_string(afd_table[i].state_from, state_name_1, 2*(nstates + 1));
+        cstate_to_string(afd_table[i].state_from, state_name_1, 2*(nstates + 1), state_names);
         AFNDInsertaEstado(afd, state_name_1, cstate_get_type(afd_table[i].state_from));
     }
 
     for (size_t i = 0; i < dfa_states; i++) {
-        cstate_to_string(afd_table[i].state_from, state_name_1, 2*(nstates + 1));
+        cstate_to_string(afd_table[i].state_from, state_name_1, 2*(nstates + 1), state_names);
         for (size_t j = 0; j < alph_sz; j++) {
             if (cstate_is_valid(afd_table[i].state_to[j])){
-                cstate_to_string(afd_table[i].state_to[j], state_name_2, 2*(nstates + 1));
+                cstate_to_string(afd_table[i].state_to[j], state_name_2, 2*(nstates + 1), state_names);
                 AFNDInsertaTransicion(afd, state_name_1, alphabet[j], state_name_2);
             }
         }

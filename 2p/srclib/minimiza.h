@@ -12,6 +12,7 @@
 #ifndef MINIMIZA_H
 #define MINIMIZA_H
 
+#include <stdbool.h>
 #include "linked_list.h"
 #include "current_state.h"
 
@@ -31,6 +32,6 @@ typedef struct _distinct {
 */
 AFND *AFNDMinimiza(AFND *afnd);
 
-uint8_t *** _delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t initial, size_t alph_sz);
+// uint8_t *** _delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t initial, size_t alph_sz);
 
 #endif

@@ -226,7 +226,6 @@ cstate *cstate_or_cstate(cstate *dst, cstate *src){
     return dst;
 }
 
-
 /**
     cstate_to_string
     Input:
@@ -237,7 +236,7 @@ cstate *cstate_or_cstate(cstate *dst, cstate *src){
         Void.
         *string is set to the string representation of the cstate
 */
-void cstate_to_string(cstate *cst, char *string, size_t str_sz){
+void cstate_to_string(cstate *cst, char *string, size_t str_sz, char **state_names){
     size_t i;
     char *cst_str;
 
@@ -254,9 +253,9 @@ void cstate_to_string(cstate *cst, char *string, size_t str_sz){
     cst_str = string;
     for (i = 0; i < cst->nstates; i++) {
         if (cst->states[i]) {
-            *cst_str = STATE_NAME;
-            cst_str++;
-            cst_str += sprintf(cst_str, "%lu", i);
+            // *cst_str = STATE_NAME;
+            // cst_str++;
+            cst_str += sprintf(cst_str, "%s", state_names[i]);
         }
     }
 }

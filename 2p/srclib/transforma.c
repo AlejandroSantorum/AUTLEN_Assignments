@@ -47,13 +47,15 @@ AFND *AFNDTransforma(AFND *afnd){
     uint8_t *i_states = get_initial_states(afnd, &nstates);
     //// Get the set of final states
     uint8_t *f_states = get_final_states(afnd, &nstates);
+    //// Get the names of the states
+    char **state_names = get_states_names(afnd, &nstates);
     //// Get alphabet of the NDFA
     char **alphabet = get_alphabet(afnd, &alph_sz);
 
     // Execute the algorithm to find the equivalent DFA to the given NDFA
     row *dfa_table = __get_dfa_table(nfa_trans_tb, l_clausure, i_states, f_states, alph_sz, nstates, &dfa_states);
     // Translate our table to the AFND object this function have to return
-    AFND *dfa = get_dfa_object(dfa_table, alphabet, alph_sz, dfa_states, nstates);
+    AFND *dfa = get_dfa_object(dfa_table, alphabet, alph_sz, dfa_states, nstates, state_names);
 
     // Free's resources
     for (size_t i = 0; i < dfa_states; i++) {
@@ -67,6 +69,7 @@ AFND *AFNDTransforma(AFND *afnd){
     free(dfa_table);
     free(i_states);
     free(f_states);
+    free(state_names);
     free(alphabet);
     sq_mtx_delete(l_clausure, nstates);
     delete_nfa_transition_table(nfa_trans_tb, nstates, alph_sz);

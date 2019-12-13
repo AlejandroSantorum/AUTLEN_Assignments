@@ -4,6 +4,7 @@
 
 #include "../srclib/afnd.h"
 #include "../srclib/transforma.h"
+#include "../srclib/minimiza.h"
 
 int main(int argc, char ** argv)
 {
@@ -11,32 +12,64 @@ int main(int argc, char ** argv)
 	AFND * p_afnd;
 	AFND * afd;
 
-	p_afnd= AFNDNuevo("afnd_ejemplo", 8, 2);
 
-	AFNDInsertaSimbolo(p_afnd,"0");
-	AFNDInsertaSimbolo(p_afnd,"1");
+    p_afnd= AFNDNuevo("afnd", 8, 2);
 
-	AFNDInsertaEstado(p_afnd, "q0",INICIAL);
-	AFNDInsertaEstado(p_afnd, "q1", NORMAL);
-	AFNDInsertaEstado(p_afnd, "q2", NORMAL);
-	AFNDInsertaEstado(p_afnd, "q3", NORMAL);
-	AFNDInsertaEstado(p_afnd, "q4", NORMAL);
-	AFNDInsertaEstado(p_afnd, "q5", NORMAL);
-	AFNDInsertaEstado(p_afnd, "q6", FINAL);
-	AFNDInsertaEstado(p_afnd, "q7", NORMAL);
+    	AFNDInsertaSimbolo(p_afnd,"0");
+    	AFNDInsertaSimbolo(p_afnd,"1");
 
-	AFNDInsertaTransicion(p_afnd, "q1", "1", "q5");
-	AFNDInsertaTransicion(p_afnd, "q1", "1", "q3");
-	AFNDInsertaTransicion(p_afnd, "q2", "0", "q4");
-	AFNDInsertaTransicion(p_afnd, "q4", "1", "q6");
-	AFNDInsertaTransicion(p_afnd, "q5", "0", "q3");
-	AFNDInsertaTransicion(p_afnd, "q5", "0", "q4");
+    	AFNDInsertaEstado(p_afnd, "A",INICIAL);
+    	AFNDInsertaEstado(p_afnd, "B", NORMAL);
+    	AFNDInsertaEstado(p_afnd, "C", FINAL);
+    	AFNDInsertaEstado(p_afnd, "D", NORMAL);
+    	AFNDInsertaEstado(p_afnd, "E", NORMAL);
+    	AFNDInsertaEstado(p_afnd, "F", NORMAL);
+    	AFNDInsertaEstado(p_afnd, "G", NORMAL);
+    	AFNDInsertaEstado(p_afnd, "H", NORMAL);
 
-	AFNDInsertaLTransicion(p_afnd, "q0", "q1");
-	AFNDInsertaLTransicion(p_afnd, "q0", "q2");
-	AFNDInsertaLTransicion(p_afnd, "q5", "q7");
-	AFNDInsertaLTransicion(p_afnd, "q7", "q6");
-	AFNDCierraLTransicion(p_afnd);
+    	AFNDInsertaTransicion(p_afnd, "A", "0", "B");
+    	AFNDInsertaTransicion(p_afnd, "A", "1", "F");
+    	AFNDInsertaTransicion(p_afnd, "B", "0", "G");
+    	AFNDInsertaTransicion(p_afnd, "B", "1", "C");
+    	AFNDInsertaTransicion(p_afnd, "C", "0", "A");
+    	AFNDInsertaTransicion(p_afnd, "C", "1", "C");
+
+    	AFNDInsertaTransicion(p_afnd, "D", "0", "C");
+    	AFNDInsertaTransicion(p_afnd, "D", "1", "G");
+    	AFNDInsertaTransicion(p_afnd, "E", "0", "H");
+    	AFNDInsertaTransicion(p_afnd, "E", "1", "F");
+    	AFNDInsertaTransicion(p_afnd, "F", "0", "C");
+    	AFNDInsertaTransicion(p_afnd, "F", "1", "G");
+    	AFNDInsertaTransicion(p_afnd, "G", "0", "G");
+    	AFNDInsertaTransicion(p_afnd, "G", "1", "E");
+    	AFNDInsertaTransicion(p_afnd, "H", "0", "G");
+    	AFNDInsertaTransicion(p_afnd, "H", "1", "C");
+
+	// p_afnd= AFNDNuevo("afnd_ejemplo", 5, 2);
+    //
+	// AFNDInsertaSimbolo(p_afnd,"a");
+    // AFNDInsertaSimbolo(p_afnd,"b");
+    //
+	// AFNDInsertaEstado(p_afnd, "q0", INICIAL);
+	// AFNDInsertaEstado(p_afnd, "q1", FINAL);
+	// AFNDInsertaEstado(p_afnd, "q2", NORMAL);
+	// AFNDInsertaEstado(p_afnd, "q3", NORMAL);
+	// AFNDInsertaEstado(p_afnd, "q4", NORMAL);
+    //
+	// AFNDInsertaTransicion(p_afnd, "q0", "a", "q1");
+	// AFNDInsertaTransicion(p_afnd, "q0", "b", "q1");
+    //
+    // AFNDInsertaTransicion(p_afnd, "q1", "a", "q0");
+	// AFNDInsertaTransicion(p_afnd, "q1", "b", "q2");
+    //
+    // AFNDInsertaTransicion(p_afnd, "q2", "a", "q0");
+	// AFNDInsertaTransicion(p_afnd, "q2", "b", "q2");
+    //
+    // AFNDInsertaTransicion(p_afnd, "q3", "a", "q1");
+	// AFNDInsertaTransicion(p_afnd, "q3", "b", "q4");
+    //
+    // AFNDInsertaTransicion(p_afnd, "q4", "a", "q3");
+	// AFNDCierraLTransicion(p_afnd);
 
 	/*
     p_afnd = AFNDNuevo("af12", 6, 13);
@@ -111,8 +144,9 @@ int main(int argc, char ** argv)
     AFNDCierraLTransicion(p_afnd);
 	*/
 
-    afd  = AFNDTransforma(p_afnd);
-	AFNDImprime(stdout,p_afnd);
+    // afd  = AFNDTransforma(p_afnd);
+    AFNDImprime(stdout, p_afnd);
+    afd = AFNDMinimiza(p_afnd);
 	AFNDImprime(stdout,afd);
     AFNDADot(afd);
 	AFNDADot(p_afnd);

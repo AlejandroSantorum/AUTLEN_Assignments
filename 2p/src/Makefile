@@ -25,5 +25,5 @@ clean_dot :
 clean_png :
 	rm -f *.png
 
-main_de_ejemplo: $(LIBS)/afnd.o $(LIBS)/transforma.o $(LIBS)/utils.o $(LIBS)/current_state.o $(LIBS)/stack.o $(LIBS)/linked_list.o
+main_de_ejemplo: $(LIBS)/afnd.o $(LIBS)/transforma.o $(LIBS)/minimiza.o  $(LIBS)/utils.o $(LIBS)/current_state.o $(LIBS)/stack.o $(LIBS)/linked_list.o
 	$(CC) $(CFLAGS) $@.c $? -o $@

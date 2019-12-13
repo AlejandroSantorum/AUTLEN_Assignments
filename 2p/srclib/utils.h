@@ -166,6 +166,20 @@ uint8_t *get_initial_states(AFND *afnd, size_t *arr_sz);
 uint8_t *get_final_states(AFND *afnd, size_t *arr_sz);
 
 /**
+ get_states_names
+ Input:
+     AFND *afnd: NDFA pointer
+     size_t *arr_sz: pointer to a size_t
+ Returns:
+     The NDFA state names
+ Advanced description:
+     It returns the NDFA state names. It also returns the  total
+     number of states in arr_sz
+*/
+char ** get_states_names(AFND *afnd, size_t *arr_sz);
+
+
+/**
  get_nfa_transition_table
  Input:
      AFND *afnd: NDFA pointer
@@ -231,4 +245,4 @@ uint8_t **get_lambda_clausure(AFND *afnd, size_t *tb_sz);
  Advanced description:
      It creates the DFA from the precalculated transition table and alphabet
 */
-AFND *get_dfa_object(row *afd_table, char **alphabet, size_t alph_sz, size_t dfa_states, size_t nstates);
+AFND *get_dfa_object(row *afd_table, char **alphabet, size_t alph_sz, size_t dfa_states, size_t nstates, char **state_names);
