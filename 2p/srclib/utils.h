@@ -106,7 +106,7 @@ int dfa_delta(uint8_t ***trans_tb, uint8_t nstates, uint8_t from, uint8_t sym_id
 
 /******************************************************************
  *
- * Tuples linked list
+ * Tuple
  *
 *******************************************************************/
 typedef struct _tuple {
