@@ -19,11 +19,6 @@
 #include "current_state.h"
 #include "afnd.h"
 
-
-/* State abbreviation by default */
-/* We suppose states are names as qi, where i is a positive integer */
-#define STATE_NAME 'q'
-
 #pragma pack(1)
 /* Current State data structure */
 struct _cstate{
@@ -232,6 +227,7 @@ cstate *cstate_or_cstate(cstate *dst, cstate *src){
         cstate *cst: pointer to a cstate struct
         char *string: pointer to a char array (pre-allocated)
         size_t str_sz: size of the pre-allocated char array
+        char *state_names: array of the original state names
     Returns:
         Void.
         *string is set to the string representation of the cstate
@@ -253,8 +249,6 @@ void cstate_to_string(cstate *cst, char *string, size_t str_sz, char **state_nam
     cst_str = string;
     for (i = 0; i < cst->nstates; i++) {
         if (cst->states[i]) {
-            // *cst_str = STATE_NAME;
-            // cst_str++;
             cst_str += sprintf(cst_str, "%s", state_names[i]);
         }
     }

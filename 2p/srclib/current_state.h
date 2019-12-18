@@ -160,7 +160,7 @@ uint8_t *cstate_get_states(cstate *cst);
         cstate *cst: pointer to a cstate struct
         char *string: pointer to a char array (pre-allocated)
         size_t str_sz: size of the pre-allocated char array
-        char **state_names: name of the original states
+        char *state_names: array of the original state names
     Returns:
         Void.
         *string is set to the string representation of the cstate

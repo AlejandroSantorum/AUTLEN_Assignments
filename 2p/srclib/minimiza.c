@@ -4,8 +4,8 @@
         · Rafael Sanchez Sanchez - rafael.sanchezs@estudiante.uam.es
         · Alejandro Santorum Varela - alejandro.santorum@estudiante.uam.es
     File: minimiza.c
-    Project: First assignment AUTLEN
-    Date: November 14, 2019
+    Project: Second assignment AUTLEN
+    Date: December 13, 2019
 
 *******************************************************************************/
 
@@ -17,18 +17,23 @@
 #include "current_state.h"
 #include "minimiza.h"
 
+// Functions to get the minimum deterministic finite automata
 row * __get_min_dfa(uint8_t ***trans_tb, distinct **d_mtx, uint8_t *i_states, uint8_t *f_states, size_t nstates, size_t alph_sz, size_t *min_states);
 row * __explore_states(distinct **d_mtx, uint8_t *i_states, uint8_t *f_states, size_t nstates, size_t *min_states);
 void __set_transitions(row *min_dfa, uint8_t ***trans_tb, size_t nstates, size_t min_states, size_t alph_sz);
 size_t __find_min_state(row *min_dfa, size_t min_states, size_t delta);
 
+// Functions regarding the distinct matrix
+distinct ** __calc_distinct_mtx(uint8_t ***trans_tb, uint8_t *fstates, size_t nstates, size_t alph_sz);
+uint8_t __exists_marked_transition(uint8_t ***trans_tb, distinct ** d_mtx,size_t nstates, size_t alph_sz, size_t i, size_t j);
+void __mark_recursively(distinct **d_mtx, llist *lst);
+
+// Functions regarding the deletion of unaccesibles states
 uint8_t *** __delete_unacc_states(uint8_t ***trans_tb, size_t nstates, uint8_t initial, size_t alph_sz, size_t *n_acc, uint8_t **acc);
 void __update_acc(uint8_t ***trans_tb, size_t nstates, uint8_t state, size_t alph_sz, uint8_t *acc, stack *stack_acc);
 void __update_metadata(uint8_t *acc, size_t nstates, size_t n_acc, uint8_t **i_states, uint8_t **f_states, char ***state_names);
 
-distinct ** __calc_distinct_mtx(uint8_t ***trans_tb, uint8_t *fstates, size_t nstates, size_t alph_sz);
-uint8_t __exists_marked_transition(uint8_t ***trans_tb, distinct ** d_mtx,size_t nstates, size_t alph_sz, size_t i, size_t j);
-void __mark_recursively(distinct **d_mtx, llist *lst);
+
 /**
     AFNDMinimiza
     Input:
@@ -36,6 +41,7 @@ void __mark_recursively(distinct **d_mtx, llist *lst);
     Returns:
         dfa object, or NULL in error case
     Advanced description:
+        It returns the minimum expression of the DFA passed as argument
 
 */
 AFND *AFNDMinimiza(AFND *afnd){
@@ -67,7 +73,7 @@ AFND *AFNDMinimiza(AFND *afnd){
     __update_metadata(acc, nstates, n_acc, &i_states, &f_states, &state_names);
     distinct **d_mtx = __calc_distinct_mtx(trans_tb, f_states, n_acc, alph_sz);
 
-    // Build the transition table of the minimum DFA
+    // Build the transition table of the minimum DFA, merging equivalent states
     size_t dfa_states;
     row *min_dfa = __get_min_dfa(trans_tb, d_mtx, i_states, f_states, n_acc, alph_sz, &dfa_states);
 
@@ -105,16 +111,81 @@ AFND *AFNDMinimiza(AFND *afnd){
     return dfa;
 }
 
-
+/**
+    __get_min_dfa (private function)
+    Input:
+        uint8_t ***nfa_trans_tb: DFA transition table
+        distinct **d_mtx: distinct matrix
+        uint8_t *i_states: array of initial states
+        uint8_t *f_states: array of final states
+        size_t nstates: DFA number of states
+        size_t alph_sz: alphabet size
+        size_t *dfa_states: size_t pointer, where we return minimum DFA num. of states
+    Returns:
+        A representation of a DFA transition table, an array of rows.
+        For example given this DFA:
+            States: q0, q0q1
+            Symbols: +, -
+            Transitions:
+                (q0q1, +) = q0q2
+                (q0q1, -) = q0q1
+                (q0q2, +) = q0q2
+                (q0q2, -) = q0q1
+            Then we would return an array of size 2:
+                row[0] = {cstate *state_from = q0q1,
+                          cstate *state_to = [q0q2, q0q1]}
+                row[1] = {cstate *state_from = q0q2,
+                          cstate *state_to = [q0q2, q0q1]}
+    Advanced description:
+        It computes the equivalent minimum DFA table of the introduced DFA. This
+        runs the algorithm necessary to merge undistinguishable states presents
+        in d_mtx and assigning the right transitions to them.
+*/
 row * __get_min_dfa(uint8_t ***trans_tb, distinct **d_mtx, uint8_t *i_states, uint8_t *f_states, size_t nstates, size_t alph_sz, size_t *min_states) {
     *min_states = 0;
+    // Merge undistinguishable states and add it to the min_dfa array of rows, each
+    // one in the field state_from of each array position.
     row *min_dfa = __explore_states(d_mtx, i_states, f_states, nstates, min_states);
 
+    // Fill the state_to for each state looking into the original transition table
+    // As it is a DFA it will copy each transition in trans_tb to our structure accordingly
     __set_transitions(min_dfa, trans_tb, nstates, *min_states, alph_sz);
     return min_dfa;
 }
 
+/**
+    __get_min_dfa (private function)
+    Input:
+        uint8_t ***nfa_trans_tb: DFA transition table
+        distinct **d_mtx: distinct matrix
+        uint8_t *i_states: array of initial states
+        uint8_t *f_states: array of final states
+        size_t nstates: DFA number of states
+        size_t alph_sz: alphabet size
+        size_t *dfa_states: size_t pointer, where we return minimum DFA num. of states
+    Returns:
+        A representation of a DFA transition table, an array of rows, merging the
+        undistinguishable ones.
+        For example given this DFA:
+            States: q0, q1, q2 (where q1 and q2 are undistinguishable)
+            Transitions:
+                (q0, +) = q1q2
+                (q0, -) = q0
+                (q1q2, +) = q1q2
+                (q1q2, -) = q0
+            Then we would return an array of size 2:
+                row[0] = {cstate *state_from = q0,
+                          cstate *state_to = NULL}
+                row[1] = {cstate *state_from = q1q2,
+                          cstate *state_to = NULL}
+    Advanced description:
+        It creates a row array and explore the distinguishable states in the
+        automata using d_mtx to merge appropiately. Then it adds it to the
+        state_from property of each row cell.
+*/
 row * __explore_states(distinct **d_mtx, uint8_t *i_states, uint8_t *f_states, size_t nstates, size_t *min_states){ //TODO: ADD FINALS AND INITIALS
+    // Memory allocation
+    //// Minimum Automata transition table
     row *min_dfa = calloc(nstates, sizeof(row));
     uint8_t *explored = calloc(nstates, sizeof(uint8_t));
     uint8_t *aux = calloc(nstates, sizeof(uint8_t));
